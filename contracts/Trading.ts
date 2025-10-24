@@ -1,0 +1,445 @@
+export const TradingABI = {
+  abi: [
+    {
+      type: "constructor",
+      inputs: [
+        { name: "_initialOwner", type: "address", internalType: "address" },
+        { name: "_evvmAddress", type: "address", internalType: "address" },
+        { name: "_treasuryAddress", type: "address", internalType: "address" },
+        {
+          name: "_nameServiceAddress",
+          type: "address",
+          internalType: "address",
+        },
+      ],
+      stateMutability: "nonpayable",
+    },
+    {
+      type: "function",
+      name: "BASIS_POINTS_DIVISOR",
+      inputs: [],
+      outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "FEE_BASIS_POINTS",
+      inputs: [],
+      outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "STAKER_DISCOUNT_PERCENT",
+      inputs: [],
+      outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "cancelOrder",
+      inputs: [
+        { name: "_caip10Wallet", type: "string", internalType: "string" },
+        { name: "_nonce", type: "uint256", internalType: "uint256" },
+        { name: "_signature", type: "bytes", internalType: "bytes" },
+      ],
+      outputs: [],
+      stateMutability: "nonpayable",
+    },
+    {
+      type: "function",
+      name: "cancelOwnershipHandover",
+      inputs: [],
+      outputs: [],
+      stateMutability: "payable",
+    },
+    {
+      type: "function",
+      name: "completeOwnershipHandover",
+      inputs: [
+        { name: "pendingOwner", type: "address", internalType: "address" },
+      ],
+      outputs: [],
+      stateMutability: "payable",
+    },
+    {
+      type: "function",
+      name: "deposit",
+      inputs: [
+        { name: "_caip10Token", type: "string", internalType: "string" },
+        { name: "_caip10Wallet", type: "string", internalType: "string" },
+        { name: "_amount", type: "uint256", internalType: "uint256" },
+        {
+          name: "_action",
+          type: "uint8",
+          internalType: "enum Trading.ActionIs",
+        },
+        { name: "_depositorWallet", type: "address", internalType: "address" },
+      ],
+      outputs: [],
+      stateMutability: "nonpayable",
+    },
+    {
+      type: "function",
+      name: "depositorInfo",
+      inputs: [
+        { name: "caip10Wallet", type: "string", internalType: "string" },
+        { name: "caip10Token", type: "string", internalType: "string" },
+      ],
+      outputs: [
+        {
+          name: "evmDepositorWallet",
+          type: "address",
+          internalType: "address",
+        },
+      ],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "evvmAddress",
+      inputs: [],
+      outputs: [{ name: "", type: "address", internalType: "address" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "getDepositor",
+      inputs: [
+        { name: "_caip10Wallet", type: "string", internalType: "string" },
+        { name: "_caip10Token", type: "string", internalType: "string" },
+      ],
+      outputs: [
+        { name: "depositor", type: "address", internalType: "address" },
+      ],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "getFeeInfo",
+      inputs: [
+        { name: "_amount", type: "uint256", internalType: "uint256" },
+        { name: "_caip10Wallet", type: "string", internalType: "string" },
+        { name: "_caip10Token", type: "string", internalType: "string" },
+      ],
+      outputs: [
+        { name: "fee", type: "uint256", internalType: "uint256" },
+        { name: "netAmount", type: "uint256", internalType: "uint256" },
+        { name: "isStaker", type: "bool", internalType: "bool" },
+      ],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "getTradeBalance",
+      inputs: [
+        { name: "_caip10Wallet", type: "string", internalType: "string" },
+        { name: "_caip10Token", type: "string", internalType: "string" },
+      ],
+      outputs: [{ name: "balance", type: "uint256", internalType: "uint256" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "nameServiceAddress",
+      inputs: [],
+      outputs: [{ name: "", type: "address", internalType: "address" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "orderNonces",
+      inputs: [
+        { name: "caip10Wallet", type: "string", internalType: "string" },
+        { name: "nonce", type: "uint256", internalType: "uint256" },
+      ],
+      outputs: [{ name: "used", type: "bool", internalType: "bool" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "owner",
+      inputs: [],
+      outputs: [{ name: "result", type: "address", internalType: "address" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "ownershipHandoverExpiresAt",
+      inputs: [
+        { name: "pendingOwner", type: "address", internalType: "address" },
+      ],
+      outputs: [{ name: "result", type: "uint256", internalType: "uint256" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "renounceOwnership",
+      inputs: [],
+      outputs: [],
+      stateMutability: "payable",
+    },
+    {
+      type: "function",
+      name: "requestOwnershipHandover",
+      inputs: [],
+      outputs: [],
+      stateMutability: "payable",
+    },
+    {
+      type: "function",
+      name: "syncUp",
+      inputs: [
+        {
+          name: "_data",
+          type: "tuple[]",
+          internalType: "struct Trading.SyncUpArguments[]",
+          components: [
+            { name: "caip10Wallet", type: "string", internalType: "string" },
+            { name: "caip10Token", type: "string", internalType: "string" },
+            {
+              name: "evmDepositorWallet",
+              type: "address",
+              internalType: "address",
+            },
+            { name: "newAmount", type: "uint256", internalType: "uint256" },
+          ],
+        },
+      ],
+      outputs: [],
+      stateMutability: "nonpayable",
+    },
+    {
+      type: "function",
+      name: "transferOwnership",
+      inputs: [{ name: "newOwner", type: "address", internalType: "address" }],
+      outputs: [],
+      stateMutability: "payable",
+    },
+    {
+      type: "function",
+      name: "treasuryAddress",
+      inputs: [],
+      outputs: [{ name: "", type: "address", internalType: "address" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "withdraw",
+      inputs: [
+        { name: "_caip10Token", type: "string", internalType: "string" },
+        { name: "_caip10WalletOrName", type: "string", internalType: "string" },
+        { name: "_amount", type: "uint256", internalType: "uint256" },
+        {
+          name: "_action",
+          type: "uint8",
+          internalType: "enum Trading.ActionIs",
+        },
+      ],
+      outputs: [],
+      stateMutability: "nonpayable",
+    },
+    {
+      type: "event",
+      name: "Deposit",
+      inputs: [
+        {
+          name: "caip10Wallet",
+          type: "string",
+          indexed: false,
+          internalType: "string",
+        },
+        {
+          name: "caip10Token",
+          type: "string",
+          indexed: false,
+          internalType: "string",
+        },
+        {
+          name: "amount",
+          type: "uint256",
+          indexed: false,
+          internalType: "uint256",
+        },
+        {
+          name: "evmDepositorAddress",
+          type: "address",
+          indexed: false,
+          internalType: "address",
+        },
+      ],
+      anonymous: false,
+    },
+    {
+      type: "event",
+      name: "FeeCollected",
+      inputs: [
+        {
+          name: "caip10Wallet",
+          type: "string",
+          indexed: false,
+          internalType: "string",
+        },
+        {
+          name: "caip10Token",
+          type: "string",
+          indexed: false,
+          internalType: "string",
+        },
+        {
+          name: "feeAmount",
+          type: "uint256",
+          indexed: false,
+          internalType: "uint256",
+        },
+        {
+          name: "isStaker",
+          type: "bool",
+          indexed: false,
+          internalType: "bool",
+        },
+      ],
+      anonymous: false,
+    },
+    {
+      type: "event",
+      name: "NewSyncUp",
+      inputs: [
+        {
+          name: "newInfo",
+          type: "tuple[]",
+          indexed: false,
+          internalType: "struct Trading.SyncUpArguments[]",
+          components: [
+            { name: "caip10Wallet", type: "string", internalType: "string" },
+            { name: "caip10Token", type: "string", internalType: "string" },
+            {
+              name: "evmDepositorWallet",
+              type: "address",
+              internalType: "address",
+            },
+            { name: "newAmount", type: "uint256", internalType: "uint256" },
+          ],
+        },
+      ],
+      anonymous: false,
+    },
+    {
+      type: "event",
+      name: "OrderCancelled",
+      inputs: [
+        {
+          name: "caip10Wallet",
+          type: "string",
+          indexed: true,
+          internalType: "string",
+        },
+        {
+          name: "nonce",
+          type: "uint256",
+          indexed: false,
+          internalType: "uint256",
+        },
+      ],
+      anonymous: false,
+    },
+    {
+      type: "event",
+      name: "OwnershipHandoverCanceled",
+      inputs: [
+        {
+          name: "pendingOwner",
+          type: "address",
+          indexed: true,
+          internalType: "address",
+        },
+      ],
+      anonymous: false,
+    },
+    {
+      type: "event",
+      name: "OwnershipHandoverRequested",
+      inputs: [
+        {
+          name: "pendingOwner",
+          type: "address",
+          indexed: true,
+          internalType: "address",
+        },
+      ],
+      anonymous: false,
+    },
+    {
+      type: "event",
+      name: "OwnershipTransferred",
+      inputs: [
+        {
+          name: "oldOwner",
+          type: "address",
+          indexed: true,
+          internalType: "address",
+        },
+        {
+          name: "newOwner",
+          type: "address",
+          indexed: true,
+          internalType: "address",
+        },
+      ],
+      anonymous: false,
+    },
+    {
+      type: "event",
+      name: "Withdraw",
+      inputs: [
+        {
+          name: "caip10Wallet",
+          type: "string",
+          indexed: false,
+          internalType: "string",
+        },
+        {
+          name: "caip10Token",
+          type: "string",
+          indexed: false,
+          internalType: "string",
+        },
+        {
+          name: "amount",
+          type: "uint256",
+          indexed: false,
+          internalType: "uint256",
+        },
+        {
+          name: "evmDepositorAddress",
+          type: "address",
+          indexed: false,
+          internalType: "address",
+        },
+      ],
+      anonymous: false,
+    },
+    { type: "error", name: "AlreadyInitialized", inputs: [] },
+    {
+      type: "error",
+      name: "CANT_WITHDRAW_MORE_THAN_ACCOUNT_HAVE",
+      inputs: [
+        { name: "have", type: "uint256", internalType: "uint256" },
+        { name: "want", type: "uint256", internalType: "uint256" },
+      ],
+    },
+    { type: "error", name: "INVALID_SIGNATURE", inputs: [] },
+    { type: "error", name: "InvalidAddress", inputs: [] },
+    { type: "error", name: "InvalidCaip10Format", inputs: [] },
+    { type: "error", name: "NewOwnerIsZeroAddress", inputs: [] },
+    { type: "error", name: "NoHandoverRequest", inputs: [] },
+    { type: "error", name: "NotEvmChain", inputs: [] },
+    { type: "error", name: "StringsInvalidAddressFormat", inputs: [] },
+    { type: "error", name: "Unauthorized", inputs: [] },
+    {
+      type: "error",
+      name: "YOURE_NOT_THE_OWNER_OF_THE_ACCOUNT",
+      inputs: [{ name: "owner", type: "address", internalType: "address" }],
+    },
+  ],
+} as const;
