@@ -1,7 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
+import { customScrollbar } from "../lib/scrollbar";
 
 interface Order {
   price: number;
@@ -82,13 +84,13 @@ export function OrderBook() {
       </div>
 
       {/* Asks (Sell Orders) */}
-      <div className="flex-1 overflow-y-auto px-2 py-1">
+      <div className={cn("flex-1 overflow-y-auto px-2 py-6", customScrollbar)}>
         {asks.map((order, i) => (
           <OrderRow key={`ask-${i}`} order={order} type="ask" />
         ))}
       </div>
 
-      <div className="border-y border-gray-800 bg-[#13161b] px-6 py-4">
+      <div className="border-y border-gray-800 bg-[#13161b] px-6 py-4 ">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="font-mono text-3xl font-bold text-white">
@@ -115,7 +117,7 @@ export function OrderBook() {
       </div>
 
       {/* Bids (Buy Orders) */}
-      <div className="flex-1 overflow-y-auto px-2 py-6">
+      <div className={cn("flex-1 overflow-y-auto px-2 py-6", customScrollbar)}>
         {bids.map((order, i) => (
           <OrderRow key={`bid-${i}`} order={order} type="bid" />
         ))}

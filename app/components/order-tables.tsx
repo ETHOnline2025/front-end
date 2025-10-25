@@ -132,9 +132,7 @@ const columns: ColumnDef<Order>[] = [
           {row.original.token.charAt(0)}
         </div>
         <div>
-          <div className="font-medium text-foreground">
-            {row.original.token}
-          </div>
+          <div className="font-medium text-white">{row.original.token}</div>
           <div className="text-xs text-muted-foreground">
             {row.original.tokenSymbol}
           </div>
@@ -157,7 +155,7 @@ const columns: ColumnDef<Order>[] = [
     header: ({ column }) => {
       return (
         <button
-          className="flex items-center gap-1 hover:text-foreground transition-colors"
+          className="flex items-center gap-1  transition-colors"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Price
@@ -166,7 +164,7 @@ const columns: ColumnDef<Order>[] = [
       );
     },
     cell: ({ row }) => (
-      <span className="text-foreground font-medium">
+      <span className="text-muted-foreground font-medium">
         $
         {row.original.price.toLocaleString("en-US", {
           minimumFractionDigits: 2,
@@ -192,7 +190,7 @@ const columns: ColumnDef<Order>[] = [
     header: ({ column }) => {
       return (
         <button
-          className="flex items-center gap-1 hover:text-foreground transition-colors"
+          className="flex items-center gap-1  transition-colors"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Total
@@ -201,7 +199,7 @@ const columns: ColumnDef<Order>[] = [
       );
     },
     cell: ({ row }) => (
-      <span className="text-foreground font-semibold">
+      <span className="text-muted-foreground font-semibold">
         $
         {row.original.total.toLocaleString("en-US", {
           minimumFractionDigits: 2,
@@ -386,23 +384,23 @@ export function OrdersTables() {
         <TabsList className="bg-[#1a1f2e] border border-[#2a2f3e]">
           <TabsTrigger
             value="active"
-            className="data-[state=active]:bg-[#2563eb]/10 data-[state=active]:text-[#60a5fa]"
+            className="data-[state=active]:bg-[#2563eb]/10 text-gray-400 data-[state=active]:text-[#60a5fa]"
           >
             Active Orders
           </TabsTrigger>
           <TabsTrigger
             value="history"
-            className="data-[state=active]:bg-[#2563eb]/10 data-[state=active]:text-[#60a5fa]"
+            className="data-[state=active]:bg-[#2563eb]/10 text-gray-400 data-[state=active]:text-[#60a5fa]"
           >
             Order History
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="active" className="mt-6">
+        <TabsContent value="active" className="mt-6 text-white">
           <OrdersTable data={mockActiveOrders} />
         </TabsContent>
 
-        <TabsContent value="history" className="mt-6">
+        <TabsContent value="history" className="mt-6 text-white">
           <OrdersTable data={mockOrderHistory} />
         </TabsContent>
       </Tabs>
