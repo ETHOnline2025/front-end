@@ -18,10 +18,7 @@ import {
   TransferPendingContent,
   TransferSuccessContent,
 } from "@/app/components/dashboard/dynamic-island-content";
-import {
-  MarketOverviewCard,
-  type ChartInterval,
-} from "@/app/components/dashboard/market-overview";
+import { type ChartInterval } from "@/app/components/dashboard/market-overview";
 import { PortfolioCard } from "@/app/components/dashboard/portfolio-card";
 import { SwapPanel } from "@/app/components/dashboard/swap-panel";
 import { TokenSelectorModal } from "@/app/components/dashboard/token-selector-modal";
@@ -47,6 +44,7 @@ import { useChainSwitcher } from "@/hooks/useChainSwitcher";
 import { getErrorMessage } from "@/lib/errors";
 import { TOKENS, type Token } from "@/lib/tokens";
 import { LoginButton } from "./components/login-button";
+import { OrderBook } from "./components/order-book";
 
 const CHART_INTERVALS: ChartInterval[] = ["1H", "4H", "1D", "1W"];
 
@@ -209,7 +207,7 @@ export default function Home() {
         hash: activity.hash,
       });
     },
-    [showIslandEvent],
+    [showIslandEvent]
   );
 
   const WithdrawFlowBridge = ({
@@ -505,12 +503,8 @@ export default function Home() {
           />
         </section>
 
-        <section className="grid gap-6 -mt-4 lg:grid-cols-[1.6fr_1fr]">
-          <MarketOverviewCard
-            activeInterval={activeInterval}
-            intervals={CHART_INTERVALS}
-            onIntervalChange={(interval) => setActiveInterval(interval)}
-          />
+        <section className="grid gap-6 -mt-4  lg:grid-cols-[1.6fr_1fr]">
+          <OrderBook />
           <SwapPanel
             fromToken={fromToken}
             toToken={toToken}
