@@ -19,7 +19,6 @@ import {
   TransferSuccessContent,
 } from "@/app/components/dashboard/dynamic-island-content";
 import { type ChartInterval } from "@/app/components/dashboard/market-overview";
-import { PortfolioCard } from "@/app/components/dashboard/portfolio-card";
 import { SwapPanel } from "@/app/components/dashboard/swap-panel";
 import { TokenSelectorModal } from "@/app/components/dashboard/token-selector-modal";
 import {
@@ -45,6 +44,7 @@ import { getErrorMessage } from "@/lib/errors";
 import { TOKENS, type Token } from "@/lib/tokens";
 import { LoginButton } from "./components/login-button";
 import { OrderBook } from "./components/order-book";
+import { OrdersTables } from "./components/order-tables";
 
 const CHART_INTERVALS: ChartInterval[] = ["1H", "4H", "1D", "1W"];
 
@@ -521,8 +521,9 @@ export default function Home() {
           />
         </section>
 
-        <section className="mt-8 lg:max-w-md">
-          <PortfolioCard tokens={TOKENS} />
+        <section className="mt-8 ">
+          {/* <PortfolioCard tokens={TOKENS} /> */}
+          <OrdersTables />
         </section>
       </main>
 
