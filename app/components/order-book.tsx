@@ -73,7 +73,7 @@ export function OrderBook() {
   };
 
   return (
-    <div className="flex  lg:max-h-[600px] flex-col max-h-5/6 rounded-xl bg-[#13161c] border-white/5 border">
+    <div className="flex  lg:max-h-[600px] flex-col max-h-5/6 rounded-xl bg-[#13161b] border-white/5 border">
       <div className="border-b border-gray-800 px-6 py-4">
         <div className="flex items-center justify-between font-mono text-xs text-gray-400">
           <span>Price (USD)</span>
