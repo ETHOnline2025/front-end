@@ -31,7 +31,6 @@ export const FloatingDock = ({
   return (
     <>
       <FloatingDockDesktop items={items} className={desktopClassName} />
-      <FloatingDockMobile items={items} className={mobileClassName} />
     </>
   );
 };
@@ -98,8 +97,8 @@ const FloatingDockDesktop = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-gray-50 px-4 pb-3 md:flex dark:bg-neutral-900",
-        className,
+        "mx-auto  h-16 items-end gap-4 rounded-2xl bg-white px-4 pb-3 flex ",
+        className
       )}
     >
       {items.map((item) => (
@@ -133,11 +132,15 @@ function IconContainer({
   const widthTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
   const heightTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
 
-  const widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 40, 20]);
+  const widthTransformIcon = useTransform(
+    distance,
+    [-150, 0, 150],
+    [20, 40, 20]
+  );
   const heightTransformIcon = useTransform(
     distance,
     [-150, 0, 150],
-    [20, 40, 20],
+    [20, 40, 20]
   );
 
   const width = useSpring(widthTransform, {
@@ -167,7 +170,15 @@ function IconContainer({
   return (
     <DockAction
       item={{ title, icon, href, onClick }}
-      mouseProps={{ ref, width, height, widthIcon, heightIcon, hovered, setHovered }}
+      mouseProps={{
+        ref,
+        width,
+        height,
+        widthIcon,
+        heightIcon,
+        hovered,
+        setHovered,
+      }}
     />
   );
 }
@@ -211,7 +222,7 @@ function DockAction({
       }
       onMouseEnter={() => mouseProps?.setHovered(true)}
       onMouseLeave={() => mouseProps?.setHovered(false)}
-      className="relative flex aspect-square items-center justify-center rounded-full bg-white/80 text-neutral-800 shadow-sm transition dark:bg-white/15 dark:text-white"
+      className="relative flex aspect-square items-center justify-center rounded-full bg-white/20 text-neutral-800 shadow-sm transition dark:bg-white/15 dark:text-white"
     >
       <AnimatePresence>
         {mouseProps?.hovered && (
