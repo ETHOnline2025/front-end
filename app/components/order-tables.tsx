@@ -1,5 +1,6 @@
 "use client";
 
+import { useOrders, type Order } from "@/app/providers/OrdersProvider";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -17,97 +18,49 @@ import { ArrowUpDown, Search } from "lucide-react";
 import * as React from "react";
 import { useEffect } from "react";
 
-type Order = {
-  id: string;
-  token: string;
-  tokenSymbol: string;
-  walletAddress: string;
-  price: number;
-  amount: number;
-  total: number;
-  timestamp: Date;
-  status: "completed" | "pending" | "cancelled";
-};
-
-const mockActiveOrders: Order[] = [
-  {
-    id: "1",
-    token: "ETH",
-    tokenSymbol: "Ethereum",
-    walletAddress: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
-    price: 3120.5,
-    amount: 1.5,
-    total: 4680.75,
-    timestamp: new Date("2025-01-20T10:30:00"),
-    status: "pending",
-  },
-  {
-    id: "2",
-    token: "USDC",
-    tokenSymbol: "USD Coin",
-    walletAddress: "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
-    price: 1.0,
-    amount: 5000,
-    total: 5000,
-    timestamp: new Date("2025-01-20T11:15:00"),
-    status: "pending",
-  },
-  {
-    id: "3",
-    token: "BTC",
-    tokenSymbol: "Bitcoin",
-    walletAddress: "0x1234567890abcdef1234567890abcdef12345678",
-    price: 45230.0,
-    amount: 0.25,
-    total: 11307.5,
-    timestamp: new Date("2025-01-20T09:45:00"),
-    status: "pending",
-  },
-];
-
 const mockOrderHistory: Order[] = [
   {
     id: "4",
-    token: "ETH",
-    tokenSymbol: "Ethereum",
-    walletAddress: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+    token: "WETH",
+    tokenSymbol: "Wrapped Ethereum",
+    walletAddress: "0xC98B57a2eabbA59369744871446864708614300E",
     price: 3100.0,
     amount: 2.0,
     total: 6200.0,
-    timestamp: new Date("2025-01-19T14:20:00"),
+    timestamp: new Date("2025-10-25T14:20:00"),
     status: "completed",
   },
   {
     id: "5",
-    token: "USDC",
-    tokenSymbol: "USD Coin",
-    walletAddress: "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
+    token: "Ape",
+    tokenSymbol: "Ape",
+    walletAddress: "0xC98B57a2eabbA59369744871446864708614300E",
     price: 1.0,
     amount: 10000,
     total: 10000,
-    timestamp: new Date("2025-01-19T16:30:00"),
+    timestamp: new Date("2025-10-25T16:30:00"),
     status: "completed",
   },
   {
     id: "6",
-    token: "SOL",
-    tokenSymbol: "Solana",
-    walletAddress: "0xabcdef1234567890abcdef1234567890abcdef12",
+    token: "Ape",
+    tokenSymbol: "Ape",
+    walletAddress: "0xC98B57a2eabbA59369744871446864708614300E",
     price: 98.5,
     amount: 50,
     total: 4925.0,
-    timestamp: new Date("2025-01-18T12:00:00"),
+    timestamp: new Date("2025-10-25T12:00:00"),
     status: "completed",
   },
   {
     id: "7",
-    token: "BTC",
-    tokenSymbol: "Bitcoin",
-    walletAddress: "0x1234567890abcdef1234567890abcdef12345678",
+    token: "WETH",
+    tokenSymbol: "Wrapped Ethereum",
+    walletAddress: "0xC98B57a2eabbA59369744871446864708614300E",
     price: 44800.0,
     amount: 0.5,
     total: 22400.0,
-    timestamp: new Date("2025-01-17T09:15:00"),
+    timestamp: new Date("2025-10-25T09:15:00"),
     status: "cancelled",
   },
 ];
@@ -369,6 +322,8 @@ function OrdersTable({ data }: { data: Order[] }) {
 }
 
 export function OrdersTables() {
+  const { activeOrders, orderHistory } = useOrders();
+
   return (
     <div className="rounded-2xl border border-white/5 bg-[#121316] p-6">
       <div className="mb-6">
@@ -386,22 +341,22 @@ export function OrdersTables() {
             value="active"
             className="data-[state=active]:bg-[#2563eb]/10 text-gray-400 data-[state=active]:text-[#60a5fa]"
           >
-            Active Orders
+            Active Orders ({activeOrders.length})
           </TabsTrigger>
           <TabsTrigger
             value="history"
             className="data-[state=active]:bg-[#2563eb]/10 text-gray-400 data-[state=active]:text-[#60a5fa]"
           >
-            Order History
+            Order History ({orderHistory.length})
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="active" className="mt-6 text-white">
-          <OrdersTable data={mockActiveOrders} />
+          <OrdersTable data={activeOrders} />
         </TabsContent>
 
         <TabsContent value="history" className="mt-6 text-white">
-          <OrdersTable data={mockOrderHistory} />
+          <OrdersTable data={orderHistory} />
         </TabsContent>
       </Tabs>
     </div>

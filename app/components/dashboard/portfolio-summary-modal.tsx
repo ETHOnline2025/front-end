@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { SimpleModal } from "@/components/modals/simple-modal";
 
 type PortfolioSummaryModalProps = {
@@ -24,13 +23,13 @@ export function PortfolioSummaryModal({
       <div className="space-y-4 text-sm text-white/80">
         <DetailRow label="Total balance" value={formattedBalance} />
         <DetailRow label="Available to swap" value={formattedBalance} />
-        <DetailRow label="Rewards this week" value="45.2 OP" />
-        <Button
+        {/* <DetailRow label="Rewards this week" value="45.2 OP" /> */}
+        {/* <Button
           onClick={onClose}
           className="w-full rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8]"
         >
           Close
-        </Button>
+        </Button> */}
       </div>
     </SimpleModal>
   );

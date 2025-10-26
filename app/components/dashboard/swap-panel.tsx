@@ -2,7 +2,6 @@
 
 import { ArrowRightLeft } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -50,12 +49,9 @@ export function SwapPanel({
         <div>
           <CardTitle className="text-white">Swap</CardTitle>
           <CardDescription className="text-white/60">
-            Trade instantly with smart routing
+            Trade instantly
           </CardDescription>
         </div>
-        <Badge variant="secondary" className="bg-sky-500/15 text-sky-300">
-          Best Route
-        </Badge>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
@@ -87,7 +83,7 @@ export function SwapPanel({
         <div className="space-y-2 rounded-xl border border-white/5 bg-black/40 p-4 text-sm text-white/70">
           <DetailRow
             label="Execution price"
-            value={`${summary.executionPrice} ${toToken.symbol}`}
+            value={`${summary.executionPrice} ${toToken?.symbol}`}
           />
           <DetailRow label="Network fee" value={summary.networkFee} />
           <DetailRow label="Slippage" value={summary.slippage} />
@@ -123,12 +119,12 @@ function TokenInput({
     <div className="rounded-2xl border border-white/10 bg-black/40 p-4">
       <div className="flex items-center justify-between text-xs uppercase tracking-wide text-white/60">
         <span>{label}</span>
-        <span>
+        {/* <span>
           Balance:{" "}
           {Intl.NumberFormat("en-US", { maximumFractionDigits: 4 }).format(
-            token.price
+            token?.price
           )}
-        </span>
+        </span> */}
       </div>
       <div className="mt-3 flex items-end justify-between gap-3">
         <button
@@ -136,10 +132,10 @@ function TokenInput({
           onClick={onSelectToken}
           className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-left text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/15"
         >
-          <span className="text-lg">{token.icon}</span>
+          <span className="text-lg">{token?.icon}</span>
           <div>
-            <p>{token.symbol}</p>
-            <p className="text-xs text-white/60">{token.name}</p>
+            <p>{token?.symbol}</p>
+            <p className="text-xs text-white/60">{token?.name}</p>
           </div>
         </button>
         <div className="flex-1 text-right">
@@ -154,7 +150,7 @@ function TokenInput({
             className="h-12 rounded-xl border-none bg-transparent text-right text-2xl font-semibold text-white outline-none focus-visible:ring-0"
           />
           <p className="text-xs text-white/50">
-            ${(parseFloat(amount || "0") * token.price).toLocaleString()}
+            ${(parseFloat(amount || "0") * token?.price).toLocaleString()}
           </p>
         </div>
       </div>

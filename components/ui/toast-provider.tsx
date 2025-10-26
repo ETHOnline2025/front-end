@@ -1,5 +1,6 @@
-"use client"
+"use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import {
   createContext,
   useCallback,
@@ -8,103 +9,104 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react"
-import { createPortal } from "react-dom"
-import { AnimatePresence, motion } from "motion/react"
+} from "react";
+import { createPortal } from "react-dom";
 
-type ToastVariant = "default" | "success" | "error" | "info"
+type ToastVariant = "default" | "success" | "error" | "info";
 
 export type ToastOptions = {
-  id?: string
-  title?: string
-  description?: string
-  variant?: ToastVariant
-  duration?: number
-}
+  id?: string;
+  title?: string;
+  description?: string;
+  variant?: ToastVariant;
+  duration?: number;
+};
 
 type ToastRecord = Required<Pick<ToastOptions, "id">> &
-  Omit<ToastOptions, "id">
+  Omit<ToastOptions, "id">;
 
 type ToastContextValue = {
-  toast: (options: ToastOptions) => void
-  dismiss: (id: string) => void
-}
+  toast: (options: ToastOptions) => void;
+  dismiss: (id: string) => void;
+};
 
-const ToastContext = createContext<ToastContextValue | undefined>(undefined)
+const ToastContext = createContext<ToastContextValue | undefined>(undefined);
 
 const variantStyles: Record<ToastVariant, string> = {
   default: "border-border bg-card text-card-foreground",
   success:
     "border-emerald-500/40 bg-emerald-500/15 text-emerald-100 shadow-emerald-900/30",
   error:
-    "border-destructive/40 bg-destructive/15 text-destructive-foreground shadow-destructive/30",
+    "border-destructive/40 bg-destructive/15 text-white shadow-destructive/30",
   info: "border-sky-500/40 bg-sky-500/15 text-sky-100 shadow-sky-900/30",
-}
+};
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
-  const [toasts, setToasts] = useState<ToastRecord[]>([])
-  const timeouts = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map())
+  const [toasts, setToasts] = useState<ToastRecord[]>([]);
+  const timeouts = useRef<Map<string, ReturnType<typeof setTimeout>>>(
+    new Map()
+  );
 
   const dismiss = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id))
-    const timer = timeouts.current.get(id)
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    const timer = timeouts.current.get(id);
     if (timer) {
-      clearTimeout(timer)
-      timeouts.current.delete(id)
+      clearTimeout(timer);
+      timeouts.current.delete(id);
     }
-  }, [])
+  }, []);
 
   const toast = useCallback(
     ({ id, duration = 4000, ...rest }: ToastOptions) => {
-      const nextId = id ?? crypto.randomUUID?.() ?? `${Date.now()}`
-      setToasts((prev) => [...prev, { id: nextId, duration, ...rest }])
+      const nextId = id ?? crypto.randomUUID?.() ?? `${Date.now()}`;
+      setToasts((prev) => [...prev, { id: nextId, duration, ...rest }]);
       if (duration > 0) {
-        const timer = setTimeout(() => dismiss(nextId), duration)
-        timeouts.current.set(nextId, timer)
+        const timer = setTimeout(() => dismiss(nextId), duration);
+        timeouts.current.set(nextId, timer);
       }
     },
     [dismiss]
-  )
+  );
 
   useEffect(() => {
-    const timers = timeouts.current
+    const timers = timeouts.current;
     return () => {
-      timers.forEach((timer) => clearTimeout(timer))
-      timers.clear()
-    }
-  }, [])
+      timers.forEach((timer) => clearTimeout(timer));
+      timers.clear();
+    };
+  }, []);
 
-  const value = useMemo(() => ({ toast, dismiss }), [toast, dismiss])
+  const value = useMemo(() => ({ toast, dismiss }), [toast, dismiss]);
 
   return (
     <ToastContext.Provider value={value}>
       {children}
       <ToastViewport toasts={toasts} dismiss={dismiss} />
     </ToastContext.Provider>
-  )
+  );
 }
 
 function ToastViewport({
   toasts,
   dismiss,
 }: {
-  toasts: ToastRecord[]
-  dismiss: (id: string) => void
+  toasts: ToastRecord[];
+  dismiss: (id: string) => void;
 }) {
-  const [container, setContainer] = useState<HTMLElement | null>(null)
+  const [container, setContainer] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-    const el = document.createElement("div")
-    el.className = "pointer-events-none fixed inset-0 z-[100]"
-    document.body.appendChild(el)
-    setContainer(el)
+    if (typeof window === "undefined") return;
+    const el = document.createElement("div");
+    el.className = "pointer-events-none fixed inset-0 z-[100]";
+    document.body.appendChild(el);
+    setContainer(el);
     return () => {
-      document.body.removeChild(el)
-    }
-  }, [])
+      document.body.removeChild(el);
+    };
+  }, []);
 
-  if (!container) return null
+  if (!container) return null;
 
   return createPortal(
     <div className="flex h-full flex-col items-end justify-end gap-2 p-4 sm:p-6">
@@ -141,15 +143,15 @@ function ToastViewport({
       </AnimatePresence>
     </div>,
     container
-  )
+  );
 }
 
 export function useToast() {
-  const ctx = useContext(ToastContext)
+  const ctx = useContext(ToastContext);
 
   if (!ctx) {
-    throw new Error("useToast must be used within a ToastProvider")
+    throw new Error("useToast must be used within a ToastProvider");
   }
 
-  return ctx
+  return ctx;
 }

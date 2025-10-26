@@ -22,6 +22,8 @@ import {
 import { type ChartInterval } from "@/app/components/dashboard/market-overview";
 import { SwapPanel } from "@/app/components/dashboard/swap-panel";
 import { TokenSelectorModal } from "@/app/components/dashboard/token-selector-modal";
+import { OrdersTables } from "@/app/components/order-tables";
+import { useOrders } from "@/app/providers/OrdersProvider";
 import {
   ChainAvatar,
   getPrimarySymbol,
@@ -45,7 +47,6 @@ import { getErrorMessage } from "@/lib/errors";
 import { TOKENS, type Token } from "@/lib/tokens";
 import { LoginButton } from "./components/login-button";
 import { OrderBook } from "./components/order-book";
-import { OrdersTables } from "./components/order-tables";
 
 const CHART_INTERVALS: ChartInterval[] = ["1H", "4H", "1D", "1W"];
 
@@ -97,11 +98,12 @@ const formatHash = (hash?: string) =>
 
 export default function Home() {
   const { toast } = useToast();
+  const { addCompletedOrder } = useOrders();
 
   const [activeInterval, setActiveInterval] = useState<ChartInterval>("1D");
   const [islandEvent, setIslandEvent] = useState<IslandEvent>({ kind: "idle" });
-  const [fromToken, setFromToken] = useState<Token>(TOKENS[1]);
-  const [toToken, setToToken] = useState<Token>(TOKENS[2]);
+  const [fromToken, setFromToken] = useState<Token>(TOKENS[0]);
+  const [toToken, setToToken] = useState<Token>(TOKENS[1]);
   const [amount, setAmount] = useState<string>("1.320");
   const [walletBalance, setWalletBalance] = useState<number>(128.45);
   const [tokenModal, setTokenModal] = useState<"from" | "to" | null>(null);
@@ -238,12 +240,13 @@ export default function Home() {
   );
 
   const quotedAmount = useMemo(() => {
+    if (!fromToken || !toToken) return "0.0000";
     const numericAmount = parseFloat(amount || "0");
     if (Number.isNaN(numericAmount) || numericAmount <= 0) {
       return "0.0000";
     }
     return (numericAmount * (fromToken.price / toToken.price)).toFixed(4);
-  }, [amount, fromToken.price, toToken.price]);
+  }, [amount, fromToken?.price, toToken?.price]);
 
   const handleSwap = useCallback(() => {
     const swapAmount = parseFloat(amount);
@@ -285,6 +288,18 @@ export default function Home() {
             Math.max(prev - swapAmount * fromTokenSnapshot.price, 0) +
             swapAmount * toTokenSnapshot.price
         );
+
+        // Add order to the orders system
+        addCompletedOrder({
+          token: toTokenSnapshot.symbol,
+          tokenSymbol: toTokenSnapshot.name,
+          walletAddress: "0xC98B57a2eabbA59369744871446864708614300E", // Mock wallet address
+          price: toTokenSnapshot.price,
+          amount: parseFloat(quotedAmount),
+          total: parseFloat(quotedAmount) * toTokenSnapshot.price,
+          status: "completed",
+        });
+
         showIslandEvent({
           kind: "swap",
           status: "success",
@@ -316,28 +331,36 @@ export default function Home() {
 
       swapTimeoutRef.current = null;
     }, 2200);
-  }, [amount, fromToken, showIslandEvent, toast, toToken]);
+  }, [
+    amount,
+    fromToken,
+    showIslandEvent,
+    toast,
+    toToken,
+    quotedAmount,
+    addCompletedOrder,
+  ]);
 
   const swapSummary = useMemo(
     () => ({
-      executionPrice: (fromToken.price / toToken.price).toFixed(4),
+      executionPrice: (fromToken.price / toToken?.price).toFixed(4),
       networkFee: "$0.74",
       slippage: "0.5%",
     }),
-    [fromToken.price, toToken.price]
+    [fromToken?.price, toToken?.price]
   );
 
   const islandIdleContent = (
     <div className="flex items-center gap-3 px-5 py-3 text-white">
-      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10">
+      {/* <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10">
         <Wallet2 className="h-4 w-4" />
-      </div>
-      <div>
+      </div> */}
+      {/* <div>
         <p className="text-xs font-medium uppercase tracking-wider text-white/60">
           Wallet balance
         </p>
         <p className="text-lg font-semibold">{formattedBalance}</p>
-      </div>
+      </div> */}
       <div className="ml-auto flex items-center gap-2">
         <DepositFlow
           chainKey={selectedChainKey}
@@ -347,7 +370,7 @@ export default function Home() {
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 rounded-full bg-white/10 px-3 text-xs text-white hover:bg-white/20"
+              className="h-8 rounded-full bg-white/10 px-3 py-2 text-xs text-white hover:bg-white/20"
               onClick={open}
               disabled={isProcessing}
             >
@@ -611,13 +634,13 @@ export default function Home() {
         <div className="space-y-4 text-sm text-white/80">
           <DetailRow label="Total balance" value={formattedBalance} />
           <DetailRow label="Available to swap" value={formattedBalance} />
-          <DetailRow label="Rewards this week" value="45.2 OP" />
-          <Button
+          {/* <DetailRow label="Rewards this week" value="45.2 OP" /> */}
+          {/* <Button
             onClick={() => setPortfolioModalOpen(false)}
             className="w-full rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8]"
           >
             Close
-          </Button>
+          </Button> */}
         </div>
       </SimpleModal>
     </div>

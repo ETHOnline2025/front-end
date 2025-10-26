@@ -21,7 +21,7 @@ export type ChainOption = BaseChainOption & {
 
 export const BASE_CHAIN_OPTIONS: BaseChainOption[] = [
   {
-    key: "ethereum",
+    key: "base",
     name: "Base Sepolia",
     detail: "Base Sepolia testnet",
     wagmiId: baseSepolia.id,
@@ -51,8 +51,9 @@ export const BASE_CHAIN_OPTIONS: BaseChainOption[] = [
 export const chainIdToKey = (id?: number | null): ChainKey => {
   if (id === arbitrumSepolia.id) return "arbitrum";
   if (id === sepolia.id) return "ethereum";
+  if (id === baseSepolia.id) return "base";
   if (id === anvil.id) return "anvil";
-  return "ethereum";
+  return "base";
 };
 
 type SwitchSuccessPayload = {

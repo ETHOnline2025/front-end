@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Search } from "lucide-react";
+import { useState } from "react";
 
 import { SimpleModal } from "@/components/modals/simple-modal";
 import { Input } from "@/components/ui/input";
@@ -54,27 +54,27 @@ export function TokenSelectorModal({
         <div className="grid gap-2">
           {filtered.map((token) => (
             <button
-              key={token.symbol}
+              key={token?.symbol}
               type="button"
               onClick={() => {
                 onSelect(token);
                 setQuery("");
               }}
               className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left transition ${
-                token.symbol === activeToken.symbol
+                token?.symbol === activeToken?.symbol
                   ? "border-white/30 bg-white/15"
                   : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="text-2xl">{token.icon}</span>
+                <span className="text-2xl">{token?.icon}</span>
                 <div>
-                  <p className="font-semibold text-white">{token.name}</p>
-                  <p className="text-xs text-white/50">{token.symbol}</p>
+                  <p className="font-semibold text-white">{token?.name}</p>
+                  <p className="text-xs text-white/50">{token?.symbol}</p>
                 </div>
               </div>
               <div className="text-right text-sm text-white/70">
-                ${token.price.toLocaleString()}
+                ${token?.price.toLocaleString()}
               </div>
             </button>
           ))}

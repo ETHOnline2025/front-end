@@ -119,7 +119,7 @@ export function WithdrawModal({
             Available: {availableBalanceLabel}
           </p>
         </div>
-
+        {/* 
         {infoMessage ? (
           <p className="rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-white/70">
             {infoMessage}
@@ -128,12 +128,12 @@ export function WithdrawModal({
 
         {errorMessage ? (
           <p className="text-xs text-red-400">{errorMessage}</p>
-        ) : null}
+        ) : null} */}
 
         <Button
           onClick={onSubmit}
           disabled={submitDisabled}
-          className="w-full rounded-xl bg-[#22c55e] text-white hover:bg-[#16a34a] disabled:cursor-not-allowed disabled:opacity-70"
+          className="w-full rounded-xl -mt-4 bg-[#22c55e] text-white hover:bg-[#16a34a] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting ? (
             <span className="flex items-center justify-center gap-2">
@@ -145,11 +145,11 @@ export function WithdrawModal({
           )}
         </Button>
 
-        {isSimulating ? (
+        {/* {isSimulating ? (
           <p className="text-center text-[0.75rem] text-white/60">
             Preparing withdrawal details…
           </p>
-        ) : null}
+        ) : null} */}
       </div>
     </SimpleModal>
   );

@@ -9,6 +9,7 @@ import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createConfig, http, WagmiProvider } from "wagmi";
 import { anvil, baseSepolia } from "wagmi/chains";
+import { OrdersProvider } from "./OrdersProvider";
 import { TokensProvider } from "./TokensProvider";
 
 const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
@@ -46,10 +47,10 @@ export default function AppProviders({ children }: { children: ReactNode }) {
         // Create embedded wallets for users who login with email and don't have external wallets
         embeddedWallets: {
           ethereum: {
-            createOnLogin: "users-without-wallets",
+            createOnLogin: "off",
           },
           solana: {
-            createOnLogin: "users-without-wallets",
+            createOnLogin: "off",
           },
         },
 
@@ -74,9 +75,11 @@ export default function AppProviders({ children }: { children: ReactNode }) {
     >
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <TokensProvider>
-            <ToastProvider>{children}</ToastProvider>
-          </TokensProvider>
+          <OrdersProvider>
+            <TokensProvider>
+              <ToastProvider>{children}</ToastProvider>
+            </TokensProvider>
+          </OrdersProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </PrivyProvider>

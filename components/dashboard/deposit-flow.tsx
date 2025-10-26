@@ -1,5 +1,6 @@
 "use client";
 
+import { useWallets } from "@privy-io/react-auth";
 import { useEffect, useMemo, useState } from "react";
 import {
   erc20Abi,
@@ -71,9 +72,15 @@ export function DepositFlow({
   onActivityEvent,
 }: DepositFlowProps) {
   const { toast } = useToast();
-  const { address: accountAddress } = useAccount();
+  const { address: wagmiAccountAddress } = useAccount();
+  const { wallets } = useWallets();
   const publicClient = usePublicClient();
   const { getTokensForChain, getTokenById } = useTokensContext();
+
+  // Get the first Ethereum wallet address from Privy wallets
+  const ethereumWallet = wallets.find((wallet) => wallet.type === "ethereum");
+  const accountAddress = ethereumWallet?.address as Address | undefined;
+
   const [open, setOpen] = useState(false);
   const [formState, setFormState] = useState<DepositFormState>({
     ...DEFAULT_FORM_STATE,
@@ -171,7 +178,11 @@ export function DepositFlow({
     setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
-  const { data: balanceData } = useBalance({
+  const {
+    data: balanceData,
+    isLoading: balanceLoading,
+    error: balanceError,
+  } = useBalance({
     address: accountAddress,
     token:
       chainKey === "solana"
@@ -181,16 +192,41 @@ export function DepositFlow({
       enabled:
         Boolean(accountAddress) &&
         chainKey !== "solana" &&
-        Boolean(selectedTokenChainConfig),
+        Boolean(selectedToken),
     },
+  });
+
+  // Debug logging
+  console.log("Deposit Flow Debug:", {
+    chainKey,
+    selectedToken: selectedToken?.symbol,
+    tokenAddress: selectedTokenChainConfig?.tokenAddress,
+    wagmiAccountAddress,
+    privyAccountAddress: accountAddress,
+    allWallets: wallets.map((w) => ({
+      type: w.type,
+      address: w.address,
+      chainId: w.chainId,
+    })),
+    balanceData,
+    balanceLoading,
+    balanceError,
+    queryEnabled:
+      Boolean(accountAddress) &&
+      chainKey !== "solana" &&
+      Boolean(selectedToken),
   });
 
   const walletBalanceLabel =
     chainKey === "solana"
       ? "Cross-chain credit"
-      : balanceData
-        ? `${formatUnits(balanceData.value, decimals)} ${selectedToken?.symbol ?? ""}`
-        : "—";
+      : balanceLoading
+        ? "Loading..."
+        : balanceError
+          ? `Error: ${balanceError.message}`
+          : balanceData
+            ? `${formatUnits(balanceData.value, balanceData.decimals)} ${selectedToken?.symbol ?? ""}`
+            : "—";
 
   const handleMax = () => {
     if (!balanceData) return;
@@ -362,6 +398,8 @@ export function DepositFlow({
     address: (contractAddress ?? ZERO_ADDRESS) as Address,
     args: supportsDeposit ? depositArgs : undefined,
   });
+  console.log("🚀 ~ DepositFlow ~ simulation:", simulation);
+  console.log("🚀 ~ DepositFlow ~ canDeposit:", canDeposit);
 
   const isSimulating = simulation.fetchStatus === "fetching";
   const simulationErrorMessage = simulation.error
@@ -476,9 +514,7 @@ export function DepositFlow({
   const triggerElement = trigger({
     open: () => setOpen(true),
     isProcessing:
-      Boolean(writePending) ||
-      Boolean(pendingTxHash) ||
-      (open && isSimulating),
+      Boolean(writePending) || Boolean(pendingTxHash) || (open && isSimulating),
   });
 
   return (

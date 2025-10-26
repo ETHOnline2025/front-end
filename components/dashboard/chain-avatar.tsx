@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 
-export type ChainKey = "ethereum" | "arbitrum" | "anvil" | "solana";
+export type ChainKey = "ethereum" | "arbitrum" | "anvil" | "solana" | "base";
 
 const chainStyles: Record<
   ChainKey,
@@ -14,6 +14,11 @@ const chainStyles: Record<
   arbitrum: {
     initials: "ARB",
     bg: "bg-gradient-to-br from-[#00a8f0] to-[#005ac9]",
+    text: "text-white",
+  },
+  base: {
+    initials: "BASE",
+    bg: "bg-gradient-to-br from-[#0052ff] to-[#2684ff]",
     text: "text-white",
   },
   anvil: {

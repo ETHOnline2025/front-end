@@ -29,7 +29,12 @@ type DepositModalProps = {
   supportsDeposit: boolean;
   errorMessage?: string | null;
   infoMessage?: string | null;
-  tokenOptions: Array<{ id: string; label: string; symbol: string; address?: string }>;
+  tokenOptions: Array<{
+    id: string;
+    label: string;
+    symbol: string;
+    address?: string;
+  }>;
   selectedTokenId?: string;
   onSelectToken: (id: string) => void;
   walletBalanceLabel?: string;
@@ -142,7 +147,7 @@ export function DepositModal({
           </p>
         </div>
 
-        {infoMessage ? (
+        {/* {infoMessage ? (
           <p className="rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-white/70">
             {infoMessage}
           </p>
@@ -150,12 +155,12 @@ export function DepositModal({
 
         {errorMessage ? (
           <p className="text-xs text-red-400">{errorMessage}</p>
-        ) : null}
+        ) : null} */}
 
         <Button
           onClick={primaryHandler}
           disabled={primaryDisabled}
-          className="w-full rounded-xl bg-[#2563eb] text-white hover:bg-[#1d4ed8]"
+          className="w-full rounded-xl -mb-4 bg-[#2563eb] text-white hover:bg-[#1d4ed8]"
         >
           {showApproveAction ? (
             isApproving ? (
@@ -176,11 +181,11 @@ export function DepositModal({
           )}
         </Button>
 
-        {isSimulating ? (
+        {/* {isSimulating ? (
           <p className="text-center text-[0.75rem] text-white/60">
             Preparing transaction details…
           </p>
-        ) : null}
+        ) : null} */}
       </div>
     </SimpleModal>
   );

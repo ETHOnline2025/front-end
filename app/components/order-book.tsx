@@ -14,7 +14,7 @@ interface Order {
 export function OrderBook() {
   const [asks, setAsks] = useState<Order[]>([]);
   const [bids, setBids] = useState<Order[]>([]);
-  const [currentPrice, setCurrentPrice] = useState(29481.3);
+  const [currentPrice, setCurrentPrice] = useState(3120.4);
   const [priceChange, setPriceChange] = useState(2.4);
 
   useEffect(() => {
@@ -78,8 +78,8 @@ export function OrderBook() {
     <div className="flex  lg:max-h-[600px] flex-col max-h-5/6 rounded-xl bg-[#13161b] border-white/5 border">
       <div className="border-b border-gray-800 px-6 py-4">
         <div className="flex items-center justify-between font-mono text-xs text-gray-400">
-          <span>Price (USD)</span>
-          <span>Amount (BTC)</span>
+          <span>Price (APE)</span>
+          <span>Amount (WETH)</span>
         </div>
       </div>
 
@@ -96,7 +96,7 @@ export function OrderBook() {
             <span className="font-mono text-3xl font-bold text-white">
               {currentPrice.toFixed(1)}
             </span>
-            <span className="text-sm text-gray-400">USD</span>
+            <span className="text-sm text-gray-400">APE</span>
             {priceChange >= 0 ? (
               <TrendingUp className="h-5 w-5 text-green-400" />
             ) : (
