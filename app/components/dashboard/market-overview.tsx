@@ -11,12 +11,13 @@ export type ChartInterval = (typeof DEFAULT_INTERVALS)[number];
 
 interface MarketOverviewProps {
   activeInterval: ChartInterval;
-  intervals?: ChartInterval[];
+  intervals?: readonly ChartInterval[];
   onIntervalChange: (interval: ChartInterval) => void;
 }
 
 export function MarketOverviewCard({
   activeInterval,
+  //
   intervals = DEFAULT_INTERVALS,
   onIntervalChange,
 }: MarketOverviewProps) {

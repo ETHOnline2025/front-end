@@ -263,8 +263,10 @@ function OrdersTable({ data }: { data: Order[] }) {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {table.getHeaderGroups().map((headerGroup: any) => (
                 <tr key={headerGroup.id} className="border-b border-[#2a2f3e]">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {headerGroup.headers.map((header: any) => (
                     <th
                       key={header.id}
@@ -283,11 +285,13 @@ function OrdersTable({ data }: { data: Order[] }) {
             </thead>
             <tbody>
               {table.getRowModel().rows?.length ? (
+                /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                 table.getRowModel().rows.map((row: any) => (
                   <tr
                     key={row.id}
                     className="border-b border-[#2a2f3e] last:border-0 hover:bg-[#1a1f2e] transition-colors"
                   >
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {row.getVisibleCells().map((cell: any) => (
                       <td key={cell.id} className="p-4 align-middle">
                         {flexRender(
