@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Wallet2,
 } from "lucide-react";
+import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -487,6 +488,10 @@ export default function Home() {
     return null;
   }, [handleSwap, islandEvent]);
 
+  const selectedChainOption = chainOptions.find(
+    (option) => option.key === selectedChainKey
+  );
+
   return (
     <div className="relative min-h-screen bg-[#050608] text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(10,20,40,0.4),_transparent_60%)]" />
@@ -536,7 +541,6 @@ export default function Home() {
 
       <FloatingDock
         desktopClassName="fixed bottom-8 left-1/2 z-40 -translate-x-1/2 border border-white/10 bg-black/60 backdrop-blur"
-        mobileClassName="fixed bottom-6 left-1/2 z-40 -translate-x-1/2"
         items={[
           {
             title: "Portfolio",
@@ -550,7 +554,15 @@ export default function Home() {
           },
           {
             title: "Chains",
-            icon: (
+            icon: selectedChainOption?.chainIcon ? (
+              <Image
+                src={`/${selectedChainOption.chainIcon}.svg`}
+                alt={selectedChainOption.name}
+                width={20}
+                height={20}
+                className="h-5 w-5"
+              />
+            ) : (
               <ChainAvatar
                 chain={selectedChainKey}
                 className="h-full w-full text-[0.6rem]"

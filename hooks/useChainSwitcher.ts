@@ -12,6 +12,7 @@ export type BaseChainOption = {
   detail: string;
   description?: string;
   wagmiId?: number;
+  chainIcon?: string;
 };
 
 export type ChainOption = BaseChainOption & {
@@ -24,6 +25,7 @@ export const BASE_CHAIN_OPTIONS: BaseChainOption[] = [
     name: "Base Sepolia",
     detail: "Base Sepolia testnet",
     wagmiId: baseSepolia.id,
+    chainIcon: "base",
   },
   // {
   //   key: "arbitrum",
@@ -42,6 +44,7 @@ export const BASE_CHAIN_OPTIONS: BaseChainOption[] = [
     key: "solana",
     name: "Solana",
     detail: "Mainnet beta",
+    chainIcon: "solana",
   },
 ];
 

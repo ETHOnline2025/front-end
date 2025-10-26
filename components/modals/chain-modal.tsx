@@ -4,9 +4,10 @@ import { Loader2 } from "lucide-react";
 
 import type { ChainKey } from "@/components/dashboard/chain-avatar";
 import { ChainAvatar } from "@/components/dashboard/chain-avatar";
-import { Badge } from "@/components/ui/badge";
 import { SimpleModal } from "@/components/modals/simple-modal";
+import { Badge } from "@/components/ui/badge";
 import type { ChainOption } from "@/hooks/useChainSwitcher";
+import Image from "next/image";
 
 type ChainModalProps = {
   open: boolean;
@@ -53,7 +54,20 @@ export function ChainModal({
               } ${isDisabled ? "opacity-80" : ""}`}
             >
               <div className="flex items-center gap-3">
-                <ChainAvatar chain={option.key} className="h-10 w-10 text-xs" />
+                {option.chainIcon ? (
+                  <Image
+                    src={`/${option.chainIcon}.svg`}
+                    alt={option.name}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10"
+                  />
+                ) : (
+                  <ChainAvatar
+                    chain={option.key}
+                    className="h-10 w-10 text-xs"
+                  />
+                )}
                 <div className="text-left">
                   <p className="font-semibold text-white">{option.name}</p>
                   <p className="text-xs text-white/60">{option.detail}</p>
