@@ -139,7 +139,7 @@ function DockAction({
 }: {
   item: FloatingDockItem;
   mouseProps?: {
-    ref: RefObject<HTMLDivElement>;
+    ref: RefObject<HTMLDivElement | null>;
     width: MotionValue<number>;
     height: MotionValue<number>;
     widthIcon: MotionValue<number>;

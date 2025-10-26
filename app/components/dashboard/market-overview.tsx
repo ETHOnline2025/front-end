@@ -3,7 +3,13 @@
 import { useMemo } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const DEFAULT_INTERVALS = ["1H", "4H", "1D", "1W"] as const;
 
@@ -21,7 +27,10 @@ export function MarketOverviewCard({
   intervals = DEFAULT_INTERVALS,
   onIntervalChange,
 }: MarketOverviewProps) {
-  const data = useMemo(() => generateChartPoints(activeInterval), [activeInterval]);
+  const data = useMemo(
+    () => generateChartPoints(activeInterval),
+    [activeInterval]
+  );
   const path = useMemo(() => createPath(data), [data]);
 
   return (
@@ -30,7 +39,8 @@ export function MarketOverviewCard({
         <div>
           <CardTitle className="text-white">Market Overview</CardTitle>
           <CardDescription className="text-white/60">
-            Quick glimpse of <span className="font-semibold text-white">ETH/USDC</span>
+            Quick glimpse of{" "}
+            <span className="font-semibold text-white">ETH/USDC</span>
           </CardDescription>
         </div>
         <div className="flex items-center gap-2 rounded-full border border-white/10 bg-black/40 p-1 text-sm">
@@ -40,7 +50,9 @@ export function MarketOverviewCard({
               type="button"
               onClick={() => onIntervalChange(interval)}
               className={`rounded-full px-4 py-1 transition ${
-                activeInterval === interval ? "bg-white text-black" : "text-white/60 hover:text-white"
+                activeInterval === interval
+                  ? "bg-white text-black"
+                  : "text-white/60 hover:text-white"
               }`}
             >
               {interval}
@@ -52,7 +64,13 @@ export function MarketOverviewCard({
         <div className="rounded-2xl border border-white/10 bg-black/40 p-6">
           <svg viewBox="0 0 400 200" className="h-64 w-full">
             <defs>
-              <linearGradient id="priceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient
+                id="priceGradient"
+                x1="0%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#2563eb" stopOpacity={0.9} />
                 <stop offset="100%" stopColor="#2563eb" stopOpacity={0.1} />
               </linearGradient>
@@ -73,7 +91,10 @@ export function MarketOverviewCard({
             <span>18:00</span>
           </div>
         </div>
-        <Badge variant="secondary" className="bg-emerald-500/15 text-emerald-300">
+        <Badge
+          variant="secondary"
+          className="bg-emerald-500/15 text-emerald-300"
+        >
           +2.34% today
         </Badge>
       </CardContent>
@@ -83,7 +104,13 @@ export function MarketOverviewCard({
 
 function generateChartPoints(interval: ChartInterval) {
   const base =
-    interval === "1H" ? 20 : interval === "4H" ? 30 : interval === "1D" ? 40 : 55;
+    interval === "1H"
+      ? 20
+      : interval === "4H"
+        ? 30
+        : interval === "1D"
+          ? 40
+          : 55;
 
   return Array.from({ length: base }, (_, index) => {
     const volatility = interval === "1W" ? 18 : interval === "1D" ? 12 : 8;
@@ -97,7 +124,8 @@ function createPath(values: number[]) {
   if (values.length === 0) return "";
   const max = Math.max(...values);
   const min = Math.min(...values);
-  const normalize = (value: number) => ((value - min) / (max - min || 1)) * 120 + 40;
+  const normalize = (value: number) =>
+    ((value - min) / (max - min || 1)) * 120 + 40;
 
   const step = 400 / (values.length - 1);
   let path = `M 0 ${200 - normalize(values[0])}`;
