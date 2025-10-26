@@ -5,19 +5,25 @@ import type { ReactNode } from "react";
 import { ToastProvider } from "@/components/ui/toast-provider";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
+import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createConfig, http, WagmiProvider } from "wagmi";
-import { anvil, arbitrumSepolia, sepolia } from "wagmi/chains";
+import { anvil, baseSepolia } from "wagmi/chains";
 import { TokensProvider } from "./TokensProvider";
 
 const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 const clientId = process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID;
 
+// Solana RPC configuration
+const solanaRpcUrl =
+  process.env.NEXT_PUBLIC_SOLANA_RPC_URL || "https://api.devnet.solana.com";
+const solanaRpcWsUrl =
+  process.env.NEXT_PUBLIC_SOLANA_RPC_WS_URL || "wss://api.devnet.solana.com";
+
 const config = createConfig({
-  chains: [arbitrumSepolia, sepolia, anvil],
+  chains: [baseSepolia, anvil],
   transports: {
-    [arbitrumSepolia.id]: http(),
-    [sepolia.id]: http(),
+    [baseSepolia.id]: http(),
     [anvil.id]: http(),
   },
 });
@@ -29,21 +35,24 @@ export default function AppProviders({ children }: { children: ReactNode }) {
       appId={privyAppId!}
       clientId={clientId}
       config={{
-        //TODO: add rpc to send tx
-        //  solana: {
-        //   rpcs: {
-        //     'solana:mainnet': {
-        //       rpc: createSolanaRpc('https://api.mainnet-beta.solana.com'), // or your custom RPC endpoint
-        //       rpcSubscriptions: createSolanaRpcSubscriptions('wss://api.mainnet-beta.solana.com') // or your custom RPC endpoint
-        //     }
-        //   }
-        // },
-        // Create embedded wallets for users who don't have a wallet
+        solana: {
+          rpcs: {
+            "solana:devnet": {
+              rpc: createSolanaRpc(solanaRpcUrl),
+              rpcSubscriptions: createSolanaRpcSubscriptions(solanaRpcWsUrl),
+            },
+          },
+        },
+        // Create embedded wallets for users who login with email and don't have external wallets
         embeddedWallets: {
           ethereum: {
             createOnLogin: "users-without-wallets",
           },
+          solana: {
+            createOnLogin: "users-without-wallets",
+          },
         },
+
         appearance: {
           walletChainType: "ethereum-and-solana",
           walletList: [
@@ -54,7 +63,13 @@ export default function AppProviders({ children }: { children: ReactNode }) {
             "coinbase_wallet",
           ],
         },
-        externalWallets: { solana: { connectors: toSolanaWalletConnectors() } },
+        externalWallets: {
+          solana: {
+            connectors: toSolanaWalletConnectors({
+              shouldAutoConnect: false,
+            }),
+          },
+        },
       }}
     >
       <WagmiProvider config={config}>

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useChainId, useSwitchChain } from "wagmi";
-import { anvil, arbitrumSepolia, sepolia } from "wagmi/chains";
+import { anvil, arbitrumSepolia, baseSepolia, sepolia } from "wagmi/chains";
 
 import type { ChainKey } from "@/components/dashboard/chain-avatar";
 
@@ -21,30 +21,27 @@ export type ChainOption = BaseChainOption & {
 export const BASE_CHAIN_OPTIONS: BaseChainOption[] = [
   {
     key: "ethereum",
-    name: "Ethereum",
-    detail: "Sepolia testnet",
-    description: "Default execution environment for swaps.",
-    wagmiId: sepolia.id,
+    name: "Base Sepolia",
+    detail: "Base Sepolia testnet",
+    wagmiId: baseSepolia.id,
   },
-  {
-    key: "arbitrum",
-    name: "Arbitrum",
-    detail: "Sepolia testnet",
-    description: "Lower fees with optimistic rollup security.",
-    wagmiId: arbitrumSepolia.id,
-  },
+  // {
+  //   key: "arbitrum",
+  //   name: "Arbitrum",
+  //   detail: "Sepolia testnet",
+  //   description: "Lower fees with optimistic rollup security.",
+  //   wagmiId: arbitrumSepolia.id,
+  // },
   {
     key: "anvil",
     name: "Anvil",
     detail: "Local devnet",
-    description: "Local fork for testing with deterministic accounts.",
     wagmiId: anvil.id,
   },
   {
     key: "solana",
     name: "Solana",
     detail: "Mainnet beta",
-    description: "We’ll hand off to Privy wallets for Solana actions.",
   },
 ];
 
@@ -65,7 +62,10 @@ type SwitchSuccessPayload = {
 
 type UseChainSwitcherHandlers = {
   onSolanaSelected?: () => void;
-  onSwitchSuccess?: (option: BaseChainOption, data: SwitchSuccessPayload) => void;
+  onSwitchSuccess?: (
+    option: BaseChainOption,
+    data: SwitchSuccessPayload
+  ) => void;
   onSwitchError?: (error: unknown) => void;
 };
 
@@ -74,7 +74,7 @@ export function useChainSwitcher(handlers: UseChainSwitcherHandlers = {}) {
   const chainId = useChainId();
 
   const [selectedChainKey, setSelectedChainKey] = useState<ChainKey>(() =>
-    chainIdToKey(chainId),
+    chainIdToKey(chainId)
   );
   const [pendingChainKey, setPendingChainKey] = useState<ChainKey | null>(null);
 
@@ -84,9 +84,7 @@ export function useChainSwitcher(handlers: UseChainSwitcherHandlers = {}) {
     mutation: {
       onSuccess: (data) => {
         const key = chainIdToKey(data.id);
-        const option = BASE_CHAIN_OPTIONS.find(
-          (item) => item.key === key,
-        ) ?? {
+        const option = BASE_CHAIN_OPTIONS.find((item) => item.key === key) ?? {
           key,
           name: data.name,
           detail: "",
@@ -127,12 +125,12 @@ export function useChainSwitcher(handlers: UseChainSwitcherHandlers = {}) {
           option.key === "solana"
             ? selectedChainKey === "solana"
               ? "Active"
-              : "Manual"
+              : ""
             : selectedChainKey === option.key
               ? "Active"
               : undefined,
       })),
-    [selectedChainKey],
+    [selectedChainKey]
   );
 
   const selectChain = (option: BaseChainOption) => {

@@ -23,6 +23,13 @@ export const TradingABI = {
     },
     {
       type: "function",
+      name: "EXECUTOR_REWARD_PERCENT",
+      inputs: [],
+      outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
       name: "FEE_BASIS_POINTS",
       inputs: [],
       outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
@@ -74,7 +81,11 @@ export const TradingABI = {
           type: "uint8",
           internalType: "enum Trading.ActionIs",
         },
-        { name: "_depositorWallet", type: "address", internalType: "address" },
+        {
+          name: "_depositorWalletOrName",
+          type: "string",
+          internalType: "string",
+        },
       ],
       outputs: [],
       stateMutability: "nonpayable",
@@ -100,6 +111,16 @@ export const TradingABI = {
       name: "evvmAddress",
       inputs: [],
       outputs: [{ name: "", type: "address", internalType: "address" }],
+      stateMutability: "view",
+    },
+    {
+      type: "function",
+      name: "executorNonces",
+      inputs: [
+        { name: "user", type: "address", internalType: "address" },
+        { name: "nonce", type: "uint256", internalType: "uint256" },
+      ],
+      outputs: [{ name: "used", type: "bool", internalType: "bool" }],
       stateMutability: "view",
     },
     {
@@ -174,6 +195,13 @@ export const TradingABI = {
     },
     {
       type: "function",
+      name: "parseAddressExternal",
+      inputs: [{ name: "_addressStr", type: "string", internalType: "string" }],
+      outputs: [{ name: "", type: "address", internalType: "address" }],
+      stateMutability: "pure",
+    },
+    {
+      type: "function",
       name: "renounceOwnership",
       inputs: [],
       outputs: [],
@@ -185,6 +213,13 @@ export const TradingABI = {
       inputs: [],
       outputs: [],
       stateMutability: "payable",
+    },
+    {
+      type: "function",
+      name: "setOwnerForTesting",
+      inputs: [{ name: "newOwner", type: "address", internalType: "address" }],
+      outputs: [],
+      stateMutability: "nonpayable",
     },
     {
       type: "function",
@@ -240,6 +275,19 @@ export const TradingABI = {
       stateMutability: "nonpayable",
     },
     {
+      type: "function",
+      name: "withdrawWithExecutor",
+      inputs: [
+        { name: "_caip10Token", type: "string", internalType: "string" },
+        { name: "_caip10Wallet", type: "string", internalType: "string" },
+        { name: "_amount", type: "uint256", internalType: "uint256" },
+        { name: "_nonce", type: "uint256", internalType: "uint256" },
+        { name: "_userSignature", type: "bytes", internalType: "bytes" },
+      ],
+      outputs: [],
+      stateMutability: "nonpayable",
+    },
+    {
       type: "event",
       name: "Deposit",
       inputs: [
@@ -266,6 +314,31 @@ export const TradingABI = {
           type: "address",
           indexed: false,
           internalType: "address",
+        },
+      ],
+      anonymous: false,
+    },
+    {
+      type: "event",
+      name: "ExecutorRewarded",
+      inputs: [
+        {
+          name: "executor",
+          type: "address",
+          indexed: true,
+          internalType: "address",
+        },
+        {
+          name: "user",
+          type: "address",
+          indexed: true,
+          internalType: "address",
+        },
+        {
+          name: "reward",
+          type: "uint256",
+          indexed: false,
+          internalType: "uint256",
         },
       ],
       anonymous: false,
@@ -431,6 +504,7 @@ export const TradingABI = {
     { type: "error", name: "INVALID_SIGNATURE", inputs: [] },
     { type: "error", name: "InvalidAddress", inputs: [] },
     { type: "error", name: "InvalidCaip10Format", inputs: [] },
+    { type: "error", name: "NONCE_ALREADY_USED", inputs: [] },
     { type: "error", name: "NewOwnerIsZeroAddress", inputs: [] },
     { type: "error", name: "NoHandoverRequest", inputs: [] },
     { type: "error", name: "NotEvmChain", inputs: [] },
