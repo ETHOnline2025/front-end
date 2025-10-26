@@ -121,7 +121,6 @@ function IconContainer({
     <DockAction
       item={{ title, icon, href, onClick }}
       mouseProps={{
-        //@ts-ignore
         ref,
         width,
         height,
